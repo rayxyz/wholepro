@@ -30,4 +30,5 @@ func main() {
 	}
 	fmt.Printf("The gotten value: %#v\n", data)
 	fmt.Println("The gotten value in string: ", string(data))
+	fmt.Println("Print a meaningless content here...")
 }
