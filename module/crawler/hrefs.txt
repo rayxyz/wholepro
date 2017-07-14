@@ -1,1 +1,4 @@
-http://wpa.qq.com/msgrd?v=3&uin='+qq+'&site=qq&menu=yeshttp://geek.csdn.net/",title:"Geek头条
+http://xw.qq.com/index.htm
+http://m.v.qq.com/
+http://vm.gtimg.cn/tencentvideo/vstyle/mobile/v2/style/index_v3.css?v=20170209&max_age=86400
+http://imgcache.gtimg.cn/tencentvideo_v1/vstyle/mobile/v2/style/img/common/touch_icon.png

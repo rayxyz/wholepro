@@ -34,9 +34,8 @@ func init() {
 
 func craw() error {
 	crawch := make(chan int)
-	crawch <- 1
 	go func() {
-		doCraw("http://www.csdn.net")
+		doCraw("http://www.csdn.net", crawch)
 	}()
 	<-crawch
 	log.Println("File path: ", filePath)
@@ -52,7 +51,7 @@ func craw() error {
 
 	var hrefsContent string
 	for _, href := range hrefs {
-		hrefsContent += *href
+		hrefsContent += *href + "\n"
 	}
 	len, err := p.WriteString(hrefsContent)
 	if err != nil {
@@ -63,11 +62,12 @@ func craw() error {
 	return nil
 }
 
-func doCraw(href string) {
+func doCraw(href string, crawch chan int) {
 	log.Println("Now crawling ", href)
 	resp, err := http.Get(href)
 	if err != nil {
 		log.Print("Crawling failed.")
+		return
 	}
 	if resp != nil {
 		defer resp.Body.Close()
@@ -76,21 +76,25 @@ func doCraw(href string) {
 		bufStr := string(buf)
 		// matches := regexp.MustCompile(pattern).FindAllString(bufStr, maxmatches)
 		matches := xurls.Strict.FindAllString(bufStr, -1)
-		log.Println("matches: ", matches)
 		if matches == nil {
 			log.Println("No matches.")
 			return
 		}
-		// if len(hrefs) > 1000 {
-		//
-		// }
-		for _, match := range matches {
-			if !checkHrefExists(match) {
-				hrefs = append(hrefs, &match)
-				doCraw(match)
+		for i := 0; i < len(matches); i++ {
+			exists := checkHrefExists(matches[i])
+			if exists {
+				continue
 			}
+			hrefs = append(hrefs, &matches[i])
+			crawchx := make(chan int)
+			go func() {
+				doCraw(matches[i], crawchx)
+				crawchx <- 2
+			}()
+			<-crawchx
 		}
 	}
+	crawch <- 1
 }
 
 func checkHrefExists(hrefToCheck string) bool {

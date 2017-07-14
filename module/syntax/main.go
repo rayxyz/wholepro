@@ -15,7 +15,7 @@ func testReflect() {
 
 func testRegx() {
 	fmt.Println("Testing regular expressions...")
-	strVal := "I dont know kkkx, ffff15969527725.kxyzwangenglishkl@12wx6.com www.goog45le.com"
+	strVal := "I dont know kkkx,www.baidu.com// ffff15969527725.kxyzwangenglishkl@12wx6.comerer///www.goog45le.comfkjfj"
 	// pattern := "w[a-z]{1,}@[a-z|0-9]{3,}.[a-z]{2,4}"
 	pattern := `www.[a-z|0-9]{1,}.{1,}[com|net|cn]`
 	matched, err := regexp.MatchString(pattern, strVal)
