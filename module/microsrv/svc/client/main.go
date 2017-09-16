@@ -8,11 +8,14 @@ import (
 	micro "github.com/micro/go-micro"
 )
 
-func hello() {
-	service := micro.NewService()
-	service.Init()
+type helloClient struct{}
+
+var client helloClient
+
+func (client *helloClient) hello() {
+	service := micro.NewService(micro.Name("ray.service.hello.client"))
 	helloer := proto.NewHelloClient("ray.service.hello", service.Client())
-	resp, err := helloer.SayHello(context.TODO(), &proto.HelloRequest{Name: "Ray"}, nil)
+	resp, err := helloer.SayHello(context.TODO(), &proto.HelloRequest{Name: "Xiaoming"})
 	if err != nil {
 		fmt.Println(err.Error())
 		return
@@ -21,5 +24,5 @@ func hello() {
 }
 
 func main() {
-	hello()
+	client.hello()
 }
